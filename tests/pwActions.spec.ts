@@ -1,0 +1,159 @@
+import {test, expect, Locator} from '@playwright/test';
+
+/* 
+  This test script verifies the text input actions on a sample web application.
+            // https://sweet-torte-0bf6bc.netlify.app/  // Sample web app URL
+  It performs the following actions:
+  1. Navigates to the registration page.  
+  2. Fills out the registration form with sample data.
+  3. Submits the registration form and handles the alert dialog.
+  4. Verifies that the login page is displayed after registration.
+  5. Fills out the login form with the registered data.
+  6. Submits the login form.
+  7. Verifies that the items(resource) page is displayed after login.
+  8. Checks the length of the heading text on the items page.
+  9. Radio button and checkbox actions 
+  10. Handles multiple alert dialogs and verifies their messages.
+*/
+
+test('Verify Text Input Actions', async ({page}) => {
+
+  // Navigate to url
+  await page.goto('https://sweet-torte-0bf6bc.netlify.app/')
+
+  // Verify register button clickable
+  const registerButtonClick:Locator = page.getByRole('link', {name: 'Register' });
+  await expect(registerButtonClick).toBeVisible(); 
+  await registerButtonClick.click();
+
+  // Verify register page successfully loaded and entered data
+
+  await page.locator('#email').fill('user10@semanticsquare.com');
+
+  await page.locator('input[type="password"]').fill('test1');
+
+  await page.locator('#fName').fill('John');  
+
+  await page.locator('input[type="submit"]').click();
+
+  const loginText:Locator = page.getByRole("heading", { name: 'Please sign in' }); //getByRole
+  await expect(loginText).toBeVisible({timeout:50000});
+
+  // Verify login page successfully loaded and entered data
+  const firstName = page.locator('#fName');
+  await firstName.fill('John');
+  // grab first name 
+  const enteredFirstName : string =  await firstName.inputValue();
+  expect(enteredFirstName).toBe('John');
+
+  const email = page.locator('#email');
+  await email.fill('user10@semanticsquare.com');
+
+  // grab email
+  const enteredEmail : string = await email.inputValue();
+  expect(enteredEmail).toBe('user10@semanticsquare.com');
+
+  await page.getByRole('button', { name: 'Login' }).click({timeout: 90000});  
+  
+  // Verify resource(items) page displayed after login
+  const headingText:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
+  await expect(headingText).toBeVisible();
+
+  // Verify length of heading text
+  const maxLength = (await headingText.textContent())?.length;
+  expect(maxLength).toBe(22);
+
+
+  // Checkbox actions - check the checkbox
+  await page.locator("//input[@name='Oven_Baked_Pastas']").check();
+
+  // assert the checkbox is checked
+  expect(page.locator("//input[@name='Oven_Baked_Pastas']")).toBeChecked();
+ 
+  const itemPrice : string | null = await page.locator("tr:nth-child(1) td:nth-child(3)").textContent();
+  expect(itemPrice).toBe('12.99');
+
+  // uncheck the checkbox
+  //await page.locator("//input[@name='Oven_Baked_Pastas']").uncheck();
+
+  // Add to cart button click
+  await page.getByRole('button', { name: 'Add to Cart' }).click();
+
+  // Radio button 
+  expect(page.locator('//input[@value=3]')).toBeChecked();
+  const treatValue : string | null = await page.locator("//input[@value=3]").getAttribute('value');
+  expect(treatValue).toBe('3');
+
+  await page.locator("//input[@id='num']").click();
+ // await page.waitForTimeout(3000);
+
+ // handle multiple alerts
+  let dialogNum = 0;
+
+  //  Check the checkbox again to avoid alert, since both options are now selected 
+  await page.locator("//input[@value=0.10]").check();
+
+  const tipValue : string | null = await page.locator('input[value="0.10"]').getAttribute('value');
+  expect(tipValue).toBe('0.10');
+
+  const totalTip : number = parseFloat(treatValue!) + parseFloat(tipValue!) * parseFloat(treatValue!);
+  expect(totalTip).toBe(3.3);
+
+  await page.locator("//input[@id='num']").click();
+  await page.waitForTimeout(3000);
+  const headingTextt:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
+  await expect(headingTextt).toBeVisible();
+
+
+  // Confirmation alerts after submitting the form
+  page.on('dialog', async dialog => {
+    ++dialogNum;
+
+    // after registration alert
+    if (dialogNum === 1){
+      expect(dialog.type()).toBe('alert');
+      // Assert the message displayed in the alert (optional)
+      expect(dialog.message()).toBe('Your information is saved. Please sign in');
+      console.log(`Dialog message: ${dialog.message()}`);
+        // Click the OK button to close the alert
+      await dialog.accept();
+    }
+
+    // alert for selecting both options
+    else if (dialogNum === 2) {
+
+         // Assert the type of dialog (optional)
+      expect(dialog.type()).toBe('alert');
+        // Assert the message displayed in the alert (optional)
+      expect(dialog.message()).toBe('Please select two options');
+      console.log(`Dialog message: ${dialog.message()}`);
+        // Click the OK button to close the alert
+      await dialog.accept();
+
+    // alert for total amount
+    } else if (dialogNum === 3) {     
+
+        // Assert the type of dialog 
+      expect(dialog.type()).toBe('alert');
+        // Assert the message displayed in the alert (optional)
+      expect(dialog.message()).toBe(`The total is: ${totalTip} + food price ${itemPrice} due today`);
+      console.log(`Dialog message: ${dialog.message()}`);
+        // Click the OK button to close the alert
+      await dialog.accept();
+
+    // final submission alert  
+    }  else if (dialogNum === 4) {
+        // Assert the type of dialog (optional)
+      expect(dialog.type()).toBe('alert');
+        // Assert the message displayed in the alert (optional)
+      expect(dialog.message()).toBe("Your information is submitted. Thank you for your purchase!");
+      console.log(`Dialog message: ${dialog.message()}`);
+        // Click the OK button to close the alert
+      await dialog.accept();
+    }
+    else {  
+      return;
+    }
+  });
+  
+});
