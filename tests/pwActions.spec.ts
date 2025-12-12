@@ -62,9 +62,19 @@ test('Verify Text Input Actions', async ({page}) => {
   // Verify length of heading text
   const maxLength = (await headingText.textContent())?.length;
   expect(maxLength).toBe(22);
+ 
+  // capture all the checkboxes
+  const checkboxes :Locator[]= await page.locator('input[type="checkbox"]').all();
+  let total : number = 0;
 
-
-  // Checkbox actions - check the checkbox
+  const priceArr  = await Promise.all(checkboxes.map(async (checkbox, index) => {
+    await checkbox.check({ force: true });
+    return await page.locator(`//tr[${index+1}]/td[3]`).textContent();
+  }));
+   const totalItemPrice : number = priceArr.reduce((acc, price) => acc + parseFloat(price!), 0);
+   expect(totalItemPrice.toFixed(2)).toBe('85.91');
+ 
+  // Checkbox actions - check the checkbox - single checkbox
   await page.locator("//input[@name='Oven_Baked_Pastas']").check();
 
   // assert the checkbox is checked
