@@ -12,7 +12,7 @@ test("Bootstrap hidden Dropdown Test", async ({page})=> {
     //click on PIM module
     await page.getByText('PIM').click();
 
-    //clci on Job Title Dropdown
+    //click on Job Title Dropdown
     await page.locator('form i').nth(2).click();
 
     await page.waitForTimeout(3000);
@@ -22,7 +22,7 @@ test("Bootstrap hidden Dropdown Test", async ({page})=> {
     const optionCount = await options.count();
     console.log("Total Options in Job Title Dropdown: " + optionCount);
 
-    // pring options
+    // print options
     console.log("All the text contents: ", await options.allTextContents());
 
     //print all the options from dropdown

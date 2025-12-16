@@ -9,7 +9,7 @@ test('Auto-suggest Dropdown Tests', async ({ page }) => {
 
   
   //autowaiting feature of playwright
-  await page.waitForTimeout(5000); //wait for 2 seconds to see the suggestions
+  await page.waitForTimeout(5000); //wait for 5 seconds to see the suggestions
 
   // get all the suggested options --> cntl+shift+p on DOM -- emulate focused page
 
