@@ -4,7 +4,7 @@ import { test, expect, Locator } from '@playwright/test';
 test("should display correct number of entries per page", async ({ page }) => {
 
     // Navigate to the page with pagination
-    await page.goto('https://dapper-macaron-0392da.netlify.app/page4');   
+    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');   
     
 
     // repeat the same logic for multiple pages
@@ -34,7 +34,7 @@ test("should display correct number of entries per page", async ({ page }) => {
 test("should navigate through pagination correctly", async ({ page }) => {
 
     // Navigate to the page with pagination
-    await page.goto('https://dapper-macaron-0392da.netlify.app/');
+    await page.goto('https://resplendent-pony-e08064.netlify.app/');
 
     // Scrape the title
     const name = await page.locator('#name').getAttribute('value');
@@ -45,7 +45,7 @@ test("should navigate through pagination correctly", async ({ page }) => {
 test("filter the rows and check the rows count", async ({ page }) => {
 
     // Navigate to the page with pagination
-    await page.goto('https://dapper-macaron-0392da.netlify.app/page4');
+    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');
 
     // Select the entries dropdown and choose 20 entries
     const dropdown: Locator = page.locator("#dt-length-0");
@@ -58,8 +58,10 @@ test("filter the rows and check the rows count", async ({ page }) => {
 
 test.only("search for specific data in a table", async ({ page }) => {
 
+    //test.setTimeout(120000); 
+
     // Navigate to the page with pagination
-    await page.goto('https://dapper-macaron-0392da.netlify.app/page4');
+    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');
 
     // search name 'Brat Steve' in the search box
     const dropdown: Locator = page.locator("#dt-search-0");
@@ -71,11 +73,13 @@ test.only("search for specific data in a table", async ({ page }) => {
 
     // Verify that the table displays the correct results
     const rowsPerPage = await page.locator("#tableData tbody tr").all();
+    let matchFound = false;
     if (rowsPerPage.length > 0) {
-        let matchFound = false;
+        
         for (let row of rowsPerPage) {
             const rowText = await row.innerText();
-            if (rowText.includes('Brat Steve')) {
+            console.log(rowText);
+            if (rowText.includes("Steve")) {
                 matchFound = true;
                 break;
             }

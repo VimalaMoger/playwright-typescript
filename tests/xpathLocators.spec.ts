@@ -32,17 +32,12 @@ test("Verify Playwright XPath Locators", async ({page}) => {
     for(const name of allNames) {
       console.log("Product Name: ", name);
     }
-  });
-  //output the names of all products
-  //Product Name:  Build your own cheap computer
-  //Product Name:  Build your own computer
-  //Product Name:  Build your own expensive computer
-  //Product Name:  Simple Computer  
+  });  
   
   // xpath start with
   const prodList: Locator = page.locator("//h2/a[starts-with(@href,'/build')]");
   const prodCount = await prodList.count();
-  await expect(prodCount).toBeGreaterThan(0);
+  expect(prodCount).toBeGreaterThan(0);
 
   // text()
   const regLink: Locator = page.locator("//a[text()='Register']");

@@ -45,7 +45,7 @@ test.only('authenticated popup test3', async ({browser}) => {
   const parentPage = await context.newPage();
 
   //Navigate to popup
-  await parentPage.goto('https://whimsical-crepe-d1bd61.netlify.app/page3');
+  await parentPage.goto('https://resplendent-pony-e08064.netlify.app/page3');
   parentPage.click('#loginBtn') // triggers popup  
 
   await parentPage.locator('#username').fill("admin");

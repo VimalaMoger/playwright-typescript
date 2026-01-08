@@ -1,10 +1,9 @@
 import {test, expect, Locator} from '@playwright/test';
-import { TIMEOUT } from 'dns';
 
 // current date and month
 test("JQuery DatePicker Test", async ({page}) => {
 
-    await page.goto('https://dapper-macaron-0392da.netlify.app/page3');
+    await page.goto('https://resplendent-pony-e08064.netlify.app/page3');
 
     const datePicker : Locator = page.locator("#Test_Date");
     expect(datePicker).toBeVisible();
@@ -20,6 +19,7 @@ test("JQuery DatePicker Test", async ({page}) => {
 });
 
 test.only("Kayak.com Date Picker Test Check-in and Check-out", async ({page}) => {
+    
     await page.goto('https://www.kayak.com/');
     await page.waitForTimeout(5000);
     let nextPage = true;

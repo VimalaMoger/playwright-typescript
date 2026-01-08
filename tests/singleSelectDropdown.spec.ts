@@ -14,11 +14,7 @@ test("Single Select Drop down", async ({page}) => {
     
     expect(options).toContain('Position');
 
-
-
     for (const option of [... options.sort()]) {
         console.log(option);
     }
-
-
 });

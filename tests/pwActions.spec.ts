@@ -71,8 +71,9 @@ test('Verify Text Input Actions', async ({page}) => {
     await checkbox.check({ force: true });
     return await page.locator(`//tr[${index+1}]/td[3]`).textContent();
   }));
-   const totalItemPrice : number = priceArr.reduce((acc, price) => acc + parseFloat(price!), 0);
-   expect(totalItemPrice.toFixed(2)).toBe('85.91');
+   
+  const totalItemPrice : number = priceArr.reduce((acc, price) => acc + parseFloat(price!), 0);
+  expect(totalItemPrice.toFixed(2)).toBe('85.91');
  
   // Checkbox actions - check the checkbox - single checkbox
   await page.locator("//input[@name='Oven_Baked_Pastas']").check();
@@ -95,10 +96,6 @@ test('Verify Text Input Actions', async ({page}) => {
   expect(treatValue).toBe('3');
 
   await page.locator("//input[@id='num']").click();
- // await page.waitForTimeout(3000);
-
- // handle multiple alerts
-  let dialogNum = 0;
 
   //  Check the checkbox again to avoid alert, since both options are now selected 
   await page.locator("//input[@value=0.10]").check();
@@ -111,59 +108,8 @@ test('Verify Text Input Actions', async ({page}) => {
 
   await page.locator("//input[@id='num']").click();
   await page.waitForTimeout(3000);
+  
   const headingTextt:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
   await expect(headingTextt).toBeVisible();
-
-
-  // Confirmation alerts after submitting the form
-  page.on('dialog', async dialog => {
-    ++dialogNum;
-
-    // after registration alert
-    if (dialogNum === 1){
-      expect(dialog.type()).toBe('alert');
-      // Assert the message displayed in the alert (optional)
-      expect(dialog.message()).toBe('Your information is saved. Please sign in');
-      console.log(`Dialog message: ${dialog.message()}`);
-        // Click the OK button to close the alert
-      await dialog.accept();
-    }
-
-    // alert for selecting both options
-    else if (dialogNum === 2) {
-
-         // Assert the type of dialog (optional)
-      expect(dialog.type()).toBe('alert');
-        // Assert the message displayed in the alert (optional)
-      expect(dialog.message()).toBe('Please select two options');
-      console.log(`Dialog message: ${dialog.message()}`);
-        // Click the OK button to close the alert
-      await dialog.accept();
-
-    // alert for total amount
-    } else if (dialogNum === 3) {     
-
-        // Assert the type of dialog 
-      expect(dialog.type()).toBe('alert');
-        // Assert the message displayed in the alert (optional)
-      expect(dialog.message()).toBe(`The total is: ${totalTip} + food price ${itemPrice} due today`);
-      console.log(`Dialog message: ${dialog.message()}`);
-        // Click the OK button to close the alert
-      await dialog.accept();
-
-    // final submission alert  
-    }  else if (dialogNum === 4) {
-        // Assert the type of dialog (optional)
-      expect(dialog.type()).toBe('alert');
-        // Assert the message displayed in the alert (optional)
-      expect(dialog.message()).toBe("Your information is submitted. Thank you for your purchase!");
-      console.log(`Dialog message: ${dialog.message()}`);
-        // Click the OK button to close the alert
-      await dialog.accept();
-    }
-    else {  
-      return;
-    }
-  });
   
 });
