@@ -1,0 +1,12 @@
+[
+    {
+        "email": "user1@semanticsquare.com",
+        "password": "test1",
+        "firstName": "user1"
+    },
+    {
+        "email": "user2@semanticsquare.com",
+        "password": "test2",
+        "firstName": "user2"
+    }
+]
