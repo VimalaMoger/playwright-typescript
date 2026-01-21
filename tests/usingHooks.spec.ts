@@ -16,6 +16,7 @@ import {test, expect, Locator, Page} from '@playwright/test';
   10. Handles multiple alert dialogs and verifies their messages.
 */
 
+//test.describe.configure({ mode: 'parallel' });
 let page: Page;
 
 test.beforeAll('Register',async ({browser}) => {
@@ -40,7 +41,7 @@ test.beforeAll('Register',async ({browser}) => {
     
 });
 
-test.describe('Grouping multiple tests', async () => {
+test.describe('Grouping multiple tests', {tag: ['@grouping','@regression']}, async () => {
 
   test('Login', async ({browser}) => {
     const loginText:Locator = page.getByRole("heading", { name: 'Please sign in' }); //getByRole
@@ -63,10 +64,37 @@ test.describe('Grouping multiple tests', async () => {
     await page.getByRole('button', { name: 'Login' }).click({timeout: 90000});
   });
 
-  test('Items page', async () => {
+  test('Items page', {tag: ['@pageVisible', '@regression']}, async () => {
     await page.goto('https://sweet-torte-0bf6bc.netlify.app/foodarpages/displayitems');
     const headingText:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
     await expect(headingText).toBeVisible();
+  });
+
+  test.skip('@browserTest @sanity Browser name test', async ({browserName}) => {
+    test.skip(browserName !== 'chromium', 'This test runs only on Chromium browsers');
+    // Test logic specific to Chromium browsers
+    console.log('This test is running on Chromium browser');
+  });
+
+  //fixme the test
+  test.fixme('Fixme test example', async ({page}) => {
+    // This test is marked as 'fixme' and will be skipped
+    // until the underlying issue is resolved.
+    // Test logic goes here
+  });
+  
+  // slow test
+  test('slow test example', async ({page}) => {
+    test.slow();
+  });
+
+  //fail the test
+  test.fail('Intentional failure test', async ({browser}) => {
+    // new context
+  const context = await browser.newContext();
+  // create a page
+  const parentPage = await context.newPage();
+    expect(context.pages()[0]).toBe(5); // This assertion will fail
   });
 });
 
