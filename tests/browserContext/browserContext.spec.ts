@@ -6,7 +6,7 @@ test('Browser context', async ({  }) => {
 
     await allure.displayName("Browser context test");
     await allure.owner("Vmla");
-    await allure.tags("Web interface", "Pages creation");
+    await allure.tags("Browser test", "Pages creation");
     await allure.severity("critical");
 
     const browser = await chromium.launch();
