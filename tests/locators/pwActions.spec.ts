@@ -1,5 +1,5 @@
-import {test, expect, Locator} from '@playwright/test';
-
+import {test} from '../../fixtures/baseTest';
+import {expect} from '@playwright/test';
 /* 
   This test script verifies the text input actions on a sample web application.
             // https://sweet-torte-0bf6bc.netlify.app/  // Sample web app URL
@@ -15,101 +15,58 @@ import {test, expect, Locator} from '@playwright/test';
   9. Radio button and checkbox actions 
   10. Handles multiple alert dialogs and verifies their messages.
 */
+test.use({ actionTimeout: 10000 });
+test('Verify Text Input Actions', async ({registerPage, loginPage, itemsPage, confirmPage}) => {
 
-test('Verify Text Input Actions', async ({page}) => {
+    // Navigate to url
+    await registerPage.navigateTo('https://sweet-torte-0bf6bc.netlify.app/');
 
-  // Navigate to url
-  await page.goto('https://sweet-torte-0bf6bc.netlify.app/')
+    // Verify register button visible and clickable
+    await registerPage.assertElementVisible();
+    await registerPage.clickRegisterLink();
+    await registerPage.register('user10@semanticsquare.com', 'test1', 'John');
+    await registerPage.handleAlertDialog();
 
-  // Verify register button clickable
-  const registerButtonClick:Locator = page.getByRole('link', {name: 'Register' });
-  await expect(registerButtonClick).toBeVisible(); 
-  await registerButtonClick.click();
+    // Verify login page successfully loaded
+    await loginPage.assertLoginDisplayTextVisible();
 
-  // Verify register page successfully loaded and entered data
+    // fill the login form with registered data
+    await loginPage.login('user10@semanticsquare.com', 'test1', 'John'); 
+    
+    // Verify resource(items) page displayed after login
+    await itemsPage.assertElementVisible();
 
-  await page.locator('#email').fill('user10@semanticsquare.com');
+    // Verify length of heading text on items page
+    const maxLength = await itemsPage.getHeadingTextLength();  
+    expect(maxLength).toBe(22);
 
-  await page.locator('input[type="password"]').fill('test1');
+    const priceArr : number[] = await itemsPage.selectAllCheckboxesAndGetPrices();
+              
+    const totalItemPrice : number = priceArr.reduce((acc, price) => acc + price, 0);
+    expect(totalItemPrice.toFixed(2)).toBe('85.91');
 
-  await page.locator('#fName').fill('John');  
+    // Add to cart button click
+    await itemsPage.clickCartButton();
 
-  await page.locator('input[type="submit"]').click();
+    // Radio button 
+    const treatValue : number | null = await confirmPage.selectRadioButtonAndGetValue(3);
+    expect(treatValue).toBe(3);
 
-  const loginText:Locator = page.getByRole("heading", { name: 'Please sign in' }); //getByRole
-  await expect(loginText).toBeVisible({timeout:50000});
+    await confirmPage.clickRequestButton();
 
-  // Verify login page successfully loaded and entered data
-  const firstName = page.locator('#fName');
-  await firstName.fill('John');
-  // grab first name 
-  const enteredFirstName : string =  await firstName.inputValue();
-  expect(enteredFirstName).toBe('John');
+    // Handle the alert dialog and verify its message
+    //await confirmPage.handleAlertDialog();
 
-  const email = page.locator('#email');
-  await email.fill('user10@semanticsquare.com');
+    //  Select Tip radio button to avoid alert 
+    const tipValue : number | null = await confirmPage.selectTipRadioButtonAndGetValue(0.10); 
+    expect(tipValue).toBe(0.10);
 
-  // grab email
-  const enteredEmail : string = await email.inputValue();
-  expect(enteredEmail).toBe('user10@semanticsquare.com');
+    const totalTip : number = treatValue + tipValue * treatValue;
+    expect(totalTip).toBe(3.3);
 
-  await page.getByRole('button', { name: 'Login' }).click({timeout: 90000});  
-  
-  // Verify resource(items) page displayed after login
-  const headingText:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
-  await expect(headingText).toBeVisible();
-
-  // Verify length of heading text
-  const maxLength = (await headingText.textContent())?.length;
-  expect(maxLength).toBe(22);
- 
-  // capture all the checkboxes
-  const checkboxes :Locator[]= await page.locator('input[type="checkbox"]').all();
-  let total : number = 0;
-
-  const priceArr  = await Promise.all(checkboxes.map(async (checkbox, index) => {
-    await checkbox.check({ force: true });
-    return await page.locator(`//tr[${index+1}]/td[3]`).textContent();
-  }));
-   
-  const totalItemPrice : number = priceArr.reduce((acc, price) => acc + parseFloat(price!), 0);
-  expect(totalItemPrice.toFixed(2)).toBe('85.91');
- 
-  // Checkbox actions - check the checkbox - single checkbox
-  await page.locator("//input[@name='Oven_Baked_Pastas']").check();
-
-  // assert the checkbox is checked
-  expect(page.locator("//input[@name='Oven_Baked_Pastas']")).toBeChecked();
- 
-  const itemPrice : string | null = await page.locator("tr:nth-child(1) td:nth-child(3)").textContent();
-  expect(itemPrice).toBe('12.99');
-
-  // uncheck the checkbox
-  //await page.locator("//input[@name='Oven_Baked_Pastas']").uncheck();
-
-  // Add to cart button click
-  await page.getByRole('button', { name: 'Add to Cart' }).click();
-
-  // Radio button 
-  expect(page.locator('//input[@value=3]')).toBeChecked();
-  const treatValue : string | null = await page.locator("//input[@value=3]").getAttribute('value');
-  expect(treatValue).toBe('3');
-
-  await page.locator("//input[@id='num']").click();
-
-  //  Check the checkbox again to avoid alert, since both options are now selected 
-  await page.locator("//input[@value=0.10]").check();
-
-  const tipValue : string | null = await page.locator('input[value="0.10"]').getAttribute('value');
-  expect(tipValue).toBe('0.10');
-
-  const totalTip : number = parseFloat(treatValue!) + parseFloat(tipValue!) * parseFloat(treatValue!);
-  expect(totalTip).toBe(3.3);
-
-  await page.locator("//input[@id='num']").click();
-  await page.waitForTimeout(3000);
-  
-  const headingTextt:Locator = page.getByRole("heading", { name: 'Delicious Food Service' }); //getByRole
-  await expect(headingTextt).toBeVisible();
-  
+    //await confirmPage.handleAlertDialog();
+    await confirmPage.clickRequestButton();
+    await confirmPage.handleAlertDialog();
+              
+    await itemsPage.assertElementVisible();     
 });
