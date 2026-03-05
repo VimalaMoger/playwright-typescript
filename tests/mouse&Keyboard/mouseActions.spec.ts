@@ -63,14 +63,14 @@ test('Drag and Drop Action Test', async ({page}) => {
   // Ensure the element is found
   if (!box) {
     throw new Error('Element not found or not visible.');
-    return; 
+    return;
   }
 
   // Move to the center of the source element
   const startX = box.x + box.width / 2;
   const startY = box.y + box.height / 2;
 
-  // Target corodinates
+  // Target co-ordinates
   const targetX = 10;
   const targetY = 15;
   
@@ -93,7 +93,7 @@ test('Drag and Drop Actions Test', async ({page}) => {
   const source = page.locator('#drag');
   const tgt = page.locator('#name');
 
-  //moucse hover to source element
+  //mouse hover to source element
   await source.hover();
   //mouse down at source element
   await page.mouse.down();
