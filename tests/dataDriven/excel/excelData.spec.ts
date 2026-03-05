@@ -30,7 +30,7 @@ function readExcelData() : { email: string, password: string, firstName: string 
   const worksheet = fileContent.Sheets[sheetName];
 
   // convert worksheet into json
-  return XLSX.utils.sheet_to_json(worksheet);
+  return XLSX.utils.sheet_to_json(worksheet);  //returns array of json objects
 }
 
 // Iterate over each json data and create a test suite
