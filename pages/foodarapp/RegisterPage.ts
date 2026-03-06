@@ -44,4 +44,9 @@ export class RegisterPage extends BasePage {
         await this.fNameInput.fill(fName);
         await this.submitButton.click();
     }
+
+    // register page get browser name method
+    async getBrowserName(): Promise<string> {
+        return this.page.context().browser()?.browserType().name() || 'unknown';
+    }
 }
