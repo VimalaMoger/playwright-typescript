@@ -17,22 +17,18 @@ export const test = base.extend<Fixtures>({
     loginPage: async ({ page }, use) => {   
         const loginPage = new LoginPage(page);
         await use(loginPage);
-        //await page.close();
     },
     registerPage: async ({ page }, use) => {
         const registerPage = new RegisterPage(page);
         await use(registerPage);
-        //await page.close();
     },
     itemsPage: async ({ page }, use) => {
         const itemsPage = new ItemsPage(page);
         await use(itemsPage);
-        //await page.close();
     },
     confirmPage: async ({ page }, use) => {
         const confirmPage = new ConfirmPage(page);
         await use(confirmPage);
-        //await page.close();
     }
 });
 
