@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class RegisterPage extends BasePage {
@@ -42,7 +42,17 @@ export class RegisterPage extends BasePage {
         await this.emailInput.fill(email);
         await this.passwordInput.fill(password);
         await this.fNameInput.fill(fName);
+        // Verify input values before submitting the form
+        await this.verifyInputValues(fName, email);
         await this.submitButton.click();
+    }
+
+    /* Verify first name input value and email input value */
+    async verifyInputValues(expectedFirstName: string, expectedEmail: string): Promise<void> {
+        const actualFirstName = await this.fNameInput.inputValue();
+        const actualEmail = await this.emailInput.inputValue();
+        expect(actualFirstName).toBe(expectedFirstName);
+        expect(actualEmail).toBe(expectedEmail);
     }
 
     // register page get browser name method
