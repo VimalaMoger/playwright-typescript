@@ -48,4 +48,9 @@ export class LoginPage extends BasePage {
         await this.fNameInput.fill(firstName);
         await this.submitLogin.click();
     }
+
+    // register page get browser name method
+    async getBrowserName(): Promise<string> {
+        return this.page.context().browser()?.browserType().name() || 'unknown';
+    }
 }
