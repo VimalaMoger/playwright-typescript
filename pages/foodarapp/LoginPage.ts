@@ -25,10 +25,6 @@ export class LoginPage extends BasePage {
         await super.assertElementVisible(this.loginLinkOnMainpage);
     }
 
-    /**
-     * Promise<void> indicates that this method does not return any value and is asynchronous. 
-     * It will complete its execution before the next line of code is executed.
-     */
     async clickLoginLink() : Promise<void> {
         await super.click(this.loginLinkOnMainpage);
     }
@@ -40,10 +36,9 @@ export class LoginPage extends BasePage {
     /**
      * Perform login action
      * @param email - User's email address
-     * @param password - User's password
      * @param firstName - User's first name
      */
-    async login(email: string, password: string, firstName: string) {
+    async login(email: string, firstName: string) {
         await this.emailInput.fill(email);
         await this.fNameInput.fill(firstName);
         await this.submitLogin.click();
