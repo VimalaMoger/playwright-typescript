@@ -2,7 +2,7 @@ import { test as base } from '@playwright/test';
 import { PageThree } from '../../pages/myjquerypage/PageThree';
 
 
-// Extend basic test by providing a "PageOne" fixture
+// Extend basic test by providing a "PageThree" fixture
 const test = base.extend<{ pageThree: PageThree }>({
     pageThree: async ({ page }, use) => {
         const pageThree = new PageThree(page);
