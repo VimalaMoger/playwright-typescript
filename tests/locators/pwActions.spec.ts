@@ -31,7 +31,7 @@ test('Verify Text Input Actions', async ({registerPage, loginPage, itemsPage, co
     await loginPage.assertLoginDisplayTextVisible();
 
     // fill the login form with registered data
-    await loginPage.login('user10@semanticsquare.com', 'test1', 'John'); 
+    await loginPage.login('user10@semanticsquare.com', 'John'); 
     
     // Verify resource(items) page displayed after login
     await itemsPage.assertElementVisible();
