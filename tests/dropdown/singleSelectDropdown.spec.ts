@@ -1,16 +1,25 @@
-import {test, expect, Locator} from '@playwright/test';
+import { test as base, Page as page, expect } from '@playwright/test';
+import { BooksPage } from '../../pages/tricentis/BooksPage';
 
-test("Single Select Drop down", async ({page}) => {
 
-    await page.goto("https://demowebshop.tricentis.com/books");
+// Extend basic test by providing a "BooksPage" fixture
+const test = base.extend<{ booksPage: BooksPage }>({
+    booksPage: async ({ page }, use) => {
+        const booksPage = new BooksPage(page);
+        await use(booksPage);
+    },
+});
+
+
+test("Single Select Drop down", async ({booksPage}) => {
+
+    await booksPage.navigateTo("https://demowebshop.tricentis.com/books");
 
     // Locate the dropdown element
-    await page.locator("//select[@id='products-orderby']").selectOption({index:2});
-    await page.waitForTimeout(5000);
+    await booksPage.selectOption({index:2});
 
-    const numOfOptions : Locator = page.locator("//select[@id='products-orderby']/option");
-    await expect(numOfOptions).toHaveCount(6);
-    const options : string[] = (await numOfOptions.allTextContents()).map( option => option.trim());
+    
+    const options : string[] = await booksPage.getAllOptions();
     
     expect(options).toContain('Position');
 
