@@ -1,43 +1,46 @@
-import {test, expect, Locator} from '@playwright/test';
+import { test as base, Page as page } from '@playwright/test';
+import { LoginPage } from '../../pages/opensource-demo/LoginPage';
 
-test("Bootstrap hidden Dropdown Test", async ({page})=> {
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+// Extend basic test by providing a "LoginPage" fixture
+const test = base.extend<{ loginPage: LoginPage }>({
+    loginPage: async ({ page }, use) => {
+        const loginPage = new LoginPage(page);
+        await use(loginPage);
+    },
+});
 
-    // Login to the application
-    await page.fill('input[name="username"]', 'Admin');
-    await page.fill('input[name="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+test("Bootstrap hidden Dropdown Test", async ({loginPage})=> {
+
+    await loginPage.navigateTo('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+
+    await loginPage.login('Admin', 'admin123');
 
     //click on PIM module
-    await page.getByText('PIM').click();
+    await loginPage.click();
 
     //click on Job Title Dropdown
-    await page.locator('form i').nth(2).click();
+    await loginPage.clickJobTitleDropdown();
 
-    await page.waitForTimeout(3000);
-
-    //capture all the options from dropdown and count
-    const options: Locator = page.locator('div[role="listbox"] span');
-    const optionCount = await options.count();
-    console.log("Total Options in Job Title Dropdown: " + optionCount);
+    //capture all the options from dropdown and count   
+    const options = await loginPage.getOptions();
+    console.log("Total Options in Job Title Dropdown: " + options.count());
 
     // print options
     console.log("All the text contents: ", await options.allTextContents());
 
     //print all the options from dropdown
-    for(let i=0; i<optionCount; i++) {
+    for(let i = 0; i < await options.count(); i++) {
         const optionText = await options.nth(i).textContent();
         console.log(optionText);
     }  
     
     //select specific option from dropdown
-    for(let i=0; i<optionCount; i++) {
+    for(let i = 0; i < await options.count(); i++) {
         const optionText = await options.nth(i).textContent();  
         if(optionText?.trim() === 'Automation Tester') {
             await options.nth(i).click();
             break;
         }   
     }
-    await page.waitForTimeout(3000);
 });
