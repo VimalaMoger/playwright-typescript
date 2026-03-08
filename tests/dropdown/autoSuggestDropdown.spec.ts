@@ -1,40 +1,42 @@
-import {test, expect } from '@playwright/test';
+import { test as base, Page as page } from '@playwright/test';
+import { LandingPage } from '../../pages/flipkart/LandingPage';
 
-test('Auto-suggest Dropdown Tests', async ({ page }) => {
 
-  await page.goto('https://www.flipkart.com/');
-  
 
-  await page.locator("//input[@name='q']").fill('iphone');  //search text
+// Extend basic test by providing a "LandingPage" fixture
+const test = base.extend<{ landingPage: LandingPage }>({
+    landingPage: async ({ page }, use) => {
+        const landingPage = new LandingPage(page);
+        await use(landingPage);
+    },
+});
 
-  
-  //autowaiting feature of playwright
-  await page.waitForTimeout(5000); //wait for 5 seconds to see the suggestions
+test('Auto-suggest Dropdown Tests', async ({ landingPage }) => {
+    await landingPage.navigateTo('https://www.flipkart.com/');
+    await landingPage.clickPopup();
+    await landingPage.clickSearchBox();
+    await landingPage.fillSearchBox('iphone');  //search text
 
-  // get all the suggested options --> cntl+shift+p on DOM -- emulate focused page
+    //capture all the options from dropdown and count   
+    const options = await landingPage.getOptions();
+    console.log("Total suggestedOptions: " + options.count());
 
-  const getAllSuggestedOptions = page.locator('ul>li'); //suggested options locator
-  const count = await getAllSuggestedOptions.count(); //count of suggested options
-  console.log('Total suggested options: ' + count);
+    // print options
+    console.log("All the text contents: ", await options.allTextContents());
 
-  //print all using map
-  const optionsText: string[] = await (await getAllSuggestedOptions.allTextContents()).map(text => text.trim());
-  console.log('Suggested options using map: ', optionsText);
-
-  //print all suggested options using loop
-  for (let i = 0; i < count; i++) {
-    const optionText = await getAllSuggestedOptions.nth(i).textContent();
-    console.log(optionText);
-  } 
-
-  // dynamically select and click on specific option
-  for (let i = 0; i < count; i++) {
-    const optionText = await getAllSuggestedOptions.nth(i).textContent();   
-    if (optionText?.trim() === 'iphone 15 pro plus') {
-      await getAllSuggestedOptions.nth(i).click();
-      break;
+    //print all the options from dropdown
+    for (let i = 0; i < await options.count(); i++) {
+        const optionText = await options.nth(i).textContent();
+        console.log(optionText);
     }
-  }
-  
+
+    //select specific option from dropdown
+    for(let i = 0; i < await options.count(); i++) {
+        const optionText = await options.nth(i).textContent();  
+        if (optionText?.trim() === 'iphone 15 plus') {
+            await options.nth(i).click();
+            break;
+        }   
+    }
 });
 
