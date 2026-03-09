@@ -1,24 +1,23 @@
-import { test, expect } from '@playwright/test';
-
+import { test as base, expect } from '@playwright/test';
+import { PageTwo } from '../../pages/myjquerypage/PageTwo';
 import fs from 'fs';
 
+const test = base.extend<{pageTwo: PageTwo}>({
+    pageTwo: async ({ page }, use) => {
+        const pageTwo = new PageTwo(page);
+        await use(pageTwo);
+    }
+})
 
-test('Download a file test', async({page}) => {
 
-    test.setTimeout(120000); // Sets a 120-second timeout for this test
+test('Download a file test', async({pageTwo}) => {
 
-    await page.goto('https://calm-praline-1cf337.netlify.app/page2');
-
-    // Start waiting for the download before clicking the event
-    const downloadPromise = page.waitForEvent('download');
+    await pageTwo.navigateTo('https://precious-scone-c844ed.netlify.app/page2');
 
     // Measuring Download Duration
     const start = Date.now();
 
-    await page.click("//a[@id='ref']");
-
-    // Wait for the download to complete 
-    const download = await downloadPromise;
+    const download = await pageTwo.clickDownloadLink();   
     
     const duration = Date.now() - start;
     console.log(`Download took ${duration} ms`);
@@ -34,17 +33,7 @@ test('Download a file test', async({page}) => {
     const fileExists = fs.existsSync(downloadPath);
     expect(fileExists).toBeTruthy;
 
-    if(fileExists){
-        fs.unlinkSync(downloadPath);
-    }
-
-    await page.waitForTimeout(5000);   
-
-    /*
-    const [download] = await Promise.all(
-        [
-            page.waitForEvent('download'),
-            page.click("//a[@id='ref']")
-        ]
-    )*/
+    if(fileExists){  
+        fs.unlinkSync(downloadPath);  // delete the file after checking it exists
+    }  
 });
