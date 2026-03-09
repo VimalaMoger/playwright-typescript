@@ -5,11 +5,17 @@ export class PageThree extends BasePage {
    
     private readonly datePicker: Locator;
     private readonly selectedDate: Locator;
+    private readonly fileInput: Locator;
+    private readonly uploadButton: Locator;
+    private readonly uploadStatus: Locator;
 
     constructor(public readonly page: Page) {
         super(page);
         this.datePicker = page.locator("#Test_Date");
         this.selectedDate = page.locator("#selectedDate");
+        this.fileInput = page.locator("#file");
+        this.uploadButton = page.locator("#uploadbutton");
+        this.uploadStatus = page.locator("#uploadStatus");
     }  
 
     override async assertElementVisible(): Promise<void> {
@@ -34,5 +40,17 @@ export class PageThree extends BasePage {
     async verifyTextContent(expectedText: string): Promise<void> {
         const actualText = await this.selectedDate.textContent();
         expect(actualText).toBe(expectedText);
+    }
+
+    async clickFileInput() : Promise<void> {
+        await this.fileInput.setInputFiles(['upload/test1.txt', 'upload/testFile1.pdf']);;
+    }
+
+    async clickUploadButton() : Promise<void> {
+        await super.click(this.uploadButton);
+    }
+
+    async getUploadStatus() : Promise<string[]> {
+        return await this.uploadStatus.allTextContents();
     }
 }

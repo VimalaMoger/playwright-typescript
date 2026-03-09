@@ -1,24 +1,24 @@
-import {test, expect} from '@playwright/test';
+import {test as base, expect} from '@playwright/test';
+import { PageThree } from '../../pages/myjquerypage/PageThree'; 
 
 
-test('File upload test', async({page}) => {
+const test = base.extend<{ pageThree: PageThree}>({
+    pageThree: async ({page}, use) => {
+        const pageThree = new PageThree(page);
+        await use(pageThree);
+    }
+});
 
-    await page.goto('https://calm-praline-1cf337.netlify.app/page3');
+test('File upload test', async({ pageThree }) => {
+    await pageThree.navigateTo('https://precious-scone-c844ed.netlify.app/page3');
 
-    await page.locator('#file').setInputFiles(['upload/test1.txt', 'upload/testFile1.pdf']);
-
-    await page.locator('#uploadbutton').click();
-
-    const msg = await page.locator('#uploadStatus').allTextContents();
+    await pageThree.clickFileInput();
+    await pageThree.clickUploadButton();
+    const msg = await pageThree.getUploadStatus();
 
     if(msg.includes("Files uploaded successfully!")) {
         console.log('File is uploaded');
     }
-
-    expect(msg).toContain("Files uploaded successfully!test1.txttestFile1.pdf");
-  
-
+    expect(msg).toContain("Files uploaded successfully!test1.txttestFile1.pdf");  
     console.log(msg);
-
-    await page.waitForTimeout(5000);
 })
