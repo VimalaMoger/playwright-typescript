@@ -24,8 +24,8 @@ if (Array.isArray(loginData)) {
                 await registerPage.register(email, password, firstName);                                 
             });
 
-            test('Login', {tag: ['@pageVisible', '@regression']}, async ({ registerPage, loginPage }) => {
-                await registerPage.handleAlertDialog();              
+            test('Login', {tag: ['@pageVisible', '@regression']}, async ({ loginPage }) => {
+                await loginPage.handleAlertDialog();              
                 await loginPage.assertLoginDisplayTextVisible();
                 await loginPage.login(email, firstName);
             });
@@ -74,8 +74,7 @@ if (Array.isArray(loginData)) {
                 const totalTip : number = treatValue + tipValue * treatValue;
                 expect(totalTip).toBe(3.3);
 
-                await confirmPage.clickRequestButton();
-                        
+                await confirmPage.clickRequestButton();                        
                 await itemsPage.assertElementVisible(); 
             });             
         });
