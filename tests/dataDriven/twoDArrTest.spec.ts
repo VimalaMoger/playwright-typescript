@@ -30,7 +30,7 @@ for (const [email, password, firstName] of loginData) {
         });             
 
         test.afterEach('Verify Text Input Actions', async ({ itemsPage, confirmPage }) => {         
-            // Verify text visible
+            // Verify text visible - items page
             await itemsPage.assertElementVisible(); 
             // Verify length of the text
             const maxLength = await itemsPage.getHeadingTextLength();  
@@ -41,7 +41,7 @@ for (const [email, password, firstName] of loginData) {
             expect(totalItemPrice.toFixed(2)).toBe('85.91');
             await itemsPage.clickCartButton();
 
-            // Radio button 
+            // Radio button - confirm page
             const treatValue : number | null = await confirmPage.selectRadioButtonAndGetValue(3);
             expect(treatValue).toBe(3);
 
