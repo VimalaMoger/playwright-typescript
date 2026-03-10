@@ -3,7 +3,7 @@ import { LandingPage } from '../../pages/flipkart/LandingPage';
 
 
 
-// Extend basic test by providing a "LandingPage" fixture
+// Extend Base test by providing a "LandingPage" fixture
 const test = base.extend<{ landingPage: LandingPage }>({
     landingPage: async ({ page }, use) => {
         const landingPage = new LandingPage(page);
