@@ -2,8 +2,8 @@ import { test as base, Page as page, expect } from '@playwright/test';
 import { BooksPage } from '../../pages/tricentis/BooksPage';
 
 
-// Extend basic test by providing a "BooksPage" fixture
-const test = base.extend<{ booksPage: BooksPage }>({
+// Extend Base test by providing a "BooksPage" fixture
+export const test = base.extend<{ booksPage: BooksPage }>({
     booksPage: async ({ page }, use) => {
         const booksPage = new BooksPage(page);
         await use(booksPage);

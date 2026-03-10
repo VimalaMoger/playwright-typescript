@@ -2,6 +2,7 @@ import { test as base, expect } from '@playwright/test';
 import { PageTwo } from '../../pages/myjquerypage/PageTwo';
 import fs from 'fs';
 
+// Extend the base test to include the page object
 const test = base.extend<{pageTwo: PageTwo}>({
     pageTwo: async ({ page }, use) => {
         const pageTwo = new PageTwo(page);
