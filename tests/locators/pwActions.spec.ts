@@ -1,20 +1,6 @@
 import {test} from '../../fixtures/baseTest';
 import {expect} from '@playwright/test';
-/* 
-  This test script verifies the text input actions on a sample web application.
-            // https://sweet-torte-0bf6bc.netlify.app/  // Sample web app URL
-  It performs the following actions:
-  1. Navigates to the registration page.  
-  2. Fills out the registration form with sample data.
-  3. Submits the registration form and handles the alert dialog.
-  4. Verifies that the login page is displayed after registration.
-  5. Fills out the login form with the registered data.
-  6. Submits the login form.
-  7. Verifies that the items(resource) page is displayed after login.
-  8. Checks the length of the heading text on the items page.
-  9. Radio button and checkbox actions 
-  10. Handles multiple alert dialogs and verifies their messages.
-*/
+
 test.use({ actionTimeout: 10000 });
 test('Verify Text Input Actions', async ({registerPage, loginPage, itemsPage, confirmPage}) => {
 
