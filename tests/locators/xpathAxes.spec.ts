@@ -2,7 +2,7 @@ import {test as base, expect, Locator} from '@playwright/test';
 import { PageOne } from '../../pages/myjquerypage/PageOne';
 
 // Extend Base test by providing "PageOne" fixture
-const test = base.extend<{ pageOne: PageOne}>({
+export const test = base.extend<{ pageOne: PageOne}>({
     pageOne: async ({page}, use) => {
         const pageOne = new PageOne(page);
         await use(pageOne);

@@ -1,95 +1,76 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test as base, expect, Locator } from '@playwright/test';
+import { PageFour } from '../../pages/myjquerypage/PageFour';
+
+const test = base.extend<{ pageFour: PageFour }>({
+    pageFour: async ({ page }, use) => {
+        const pageFour = new PageFour(page);
+        await use(pageFour);
+    },
+});
 
 
-test("should display correct number of entries per page", async ({ page }) => {
+test("should display correct number of entries per page", async ({ pageFour }) => {
 
     // Navigate to the page with pagination
-    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');   
-    
-
+    await pageFour.navigateTo('https://precious-scone-c844ed.netlify.app/page4'); 
     // repeat the same logic for multiple pages
-      let nextPage = true;
-  
-
+    let nextPage = true;
     while (nextPage) {
-
-        const rowsPerPage = await page.locator("#tableData tbody tr").all();
+        const rowsPerPage = await pageFour.getTableData();
         for (let row of rowsPerPage) {
-            console.log(await row.innerText());
-            
+            console.log(row + " ");
         }
-
-        const nextButton = page.locator("button[aria-label='Next']");
-        const isDisabled = await nextButton.getAttribute('class');
-
-        if (isDisabled?.includes('disabled')) {
+        if (await pageFour.isNextButtonDisabled()) {
                 nextPage = false;
         } else {
-                await nextButton.click();
-                await page.waitForTimeout(1000); // wait for the page to load
+                await pageFour.clickNext();
         } 
     }
 });
 
-test("should navigate through pagination correctly", async ({ page }) => {
+test("should navigate through pagination correctly", async ({ pageFour }) => {
 
-    // Navigate to the page with pagination
-    await page.goto('https://resplendent-pony-e08064.netlify.app/');
-
+    await pageFour.navigateTo('https://precious-scone-c844ed.netlify.app/');
     // Scrape the title
-    const name = await page.locator('#name').getAttribute('value');
+    const name = await pageFour.getName();
     console.log("Name:", name);
-    expect(name).toBe('John Smith');
+    expect(name).toBe('Your Name');
 });
 
-test("filter the rows and check the rows count", async ({ page }) => {
+test("filter the rows and check the rows count", async ({ pageFour }) => {
 
     // Navigate to the page with pagination
-    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');
+    await pageFour.navigateTo('https://precious-scone-c844ed.netlify.app/page4');
 
     // Select the entries dropdown and choose 20 entries
-    const dropdown: Locator = page.locator("#dt-length-0");
-    await dropdown.selectOption({label: '20'});
+    await pageFour.selectEntries('20');
 
-    const rowsPerPage = await page.locator("#tableData tbody tr").all();
+    const rowsPerPage = await pageFour.getTableData();
     expect(rowsPerPage.length).toBeLessThanOrEqual(20);
 
 });
 
-test.only("search for specific data in a table", async ({ page }) => {
+test("search for specific data in a table", async ({ pageFour }) => {
 
-    //test.setTimeout(120000); 
+    await pageFour.navigateTo('https://precious-scone-c844ed.netlify.app/page4');
 
-    // Navigate to the page with pagination
-    await page.goto('https://resplendent-pony-e08064.netlify.app/page4');
-
-    // search name 'Brat Steve' in the search box
-    const dropdown: Locator = page.locator("#dt-search-0");
-    
-    // Enter the search term
-    await dropdown.fill('Brat Steve');
-
-    await page.waitForTimeout(1000); 
+    // search name 'Brat Steve' in the search box     
+    await pageFour.searchForName('Brat Steve');
 
     // Verify that the table displays the correct results
-    const rowsPerPage = await page.locator("#tableData tbody tr").all();
+    const rowsPerPage = await pageFour.getTableData();
     let matchFound = false;
-    if (rowsPerPage.length > 0) {
-        
+    if (rowsPerPage.length > 0) {        
         for (let row of rowsPerPage) {
-            const rowText = await row.innerText();
-            console.log(rowText);
-            if (rowText.includes("Steve")) {
+            console.log(row + " ");
+            if (row.includes("Steve")) {
                 matchFound = true;
                 break;
             }
         }
         // Expect the match to be found
-        expect(matchFound).toBeTruthy();
-        //expect(matchFound).toBeFalsy();
-        
+        expect(matchFound).toBeTruthy();      
     } else {
         console.log("No rows found after search");
     }
-
 });
