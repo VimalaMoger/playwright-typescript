@@ -4,11 +4,9 @@ import { test, expect } from '@playwright/test';
 test('Playwright assertions test', async ({ page }) => {
 
 
-    await page.goto('https://calm-praline-1cf337.netlify.app/');
-
+    await page.goto('https://precious-scone-c844ed.netlify.app/');
     
     //Auto retry assertions
-
     const title = page.locator('#heading1');
     await expect(title).toBeVisible();
     expect(title.textContent()).not.toBeNull();
@@ -17,7 +15,7 @@ test('Playwright assertions test', async ({ page }) => {
     await expect(title).toHaveText('My First jQuery Web Page', { timeout: 5000 });
     expect(title).toContainText('Web Page');
 
-    const button = page.locator('#drag');
+    const button = page.locator('#drag'); 
     await expect(button).toBeEnabled();
     
     //Non-retry assertions
@@ -37,15 +35,15 @@ test('Playwright assertions test', async ({ page }) => {
     
 });
 
-test.only("Autowaiting and forcing", async ({ page }) => {
-    await page.goto('https://calm-praline-1cf337.netlify.app/');
+test("Autowaiting and forcing", async ({ page }) => {
+    await page.goto('https://precious-scone-c844ed.netlify.app/');
 
     const title =  page.locator('#heading1');
 
     // Hard assertion - test fails
     await expect.soft(title).toHaveText('Unknown Title');
 
-    // Soft assertion 
+    // Soft assertion - test continues even if it fails
     await expect.soft(title).toHaveText('Unknown Title');
     console.log('Hard assertion passed');
     

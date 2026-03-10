@@ -16,12 +16,11 @@ test('Browser cookies', async() => {
         {
             name: 'test_cookie',
             value: 'cooke_value_123',
-            url: 'https://calm-praline-1cf337.netlify.app',
+            url: 'https://precious-scone-c844ed.netlify.app',
         }
     ]);
-
     
-    await page.goto('https://calm-praline-1cf337.netlify.app');
+    await page.goto('https://precious-scone-c844ed.netlify.app');
 
     // Get the details of the cookie by name:
     const cookie = await context.cookies().then(cookies => cookies.find(c => c.name === 'test_cookie'));
