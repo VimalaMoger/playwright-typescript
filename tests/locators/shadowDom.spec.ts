@@ -1,28 +1,28 @@
-import {test,expect} from '@playwright/test';
+import {test as base,expect} from '@playwright/test';
+import { MainPage } from '../../pages/books-pwakit/MainPage';
+import { LandingPage } from '../../pages/shop.polymer/LandingPage';
 
 
-test('Shadow Dom', async({page}) => {
-    await page.goto('https://books-pwakit.appspot.com/');
+const test = base.extend<{ mainPage: MainPage, landingPage: LandingPage }>({
+    mainPage: async ({ page }, use) => {
+        const mainPage = new MainPage(page);
+        await use(mainPage);
+    },
+    landingPage: async ({ page }, use) => {
+        const landingPage = new LandingPage(page);
+        await use(landingPage);
+    },
+});
 
-    await page.locator("#input").fill("Playwright automation");
-    await page.keyboard.press("Enter");
-
-    await page.waitForTimeout(5000);
-
-    const booksFound = await page.locator('h2.title').all();
-    expect(booksFound.length).toBe(7);
+test('Shadow Dom', async({ mainPage }) => {
+    await mainPage.navigateTo('https://books-pwakit.appspot.com/');
+    await mainPage.performSearch("Playwright automation"); 
+    expect(await mainPage.getBookLength()).toBe(5);
 });
 
 
-test('Nested Shadow Dom', async({page}) => {
-    await page.goto('https://shop.polymer-project.org/');
-
-    await page.locator("a[aria-label=\"Men's Outerwear Shop Now\"]").click();
-
-    await page.waitForTimeout(5000);
-
-    const productsFound = await page.locator('div.title').all();
-    expect(productsFound.length).toBe(16);
-
-    await page.waitForTimeout(5000);
+test('Nested Shadow Dom', async({ landingPage }) => {
+    await landingPage.navigateTo('https://shop.polymer-project.org/');
+    await landingPage.click();
+    expect(await landingPage.getProductLength()).toBe(16);
 });
