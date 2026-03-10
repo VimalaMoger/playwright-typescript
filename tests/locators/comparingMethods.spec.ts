@@ -1,20 +1,19 @@
-import {test, Locator, expect } from '@playwright/test';
+import { Locator } from '@playwright/test';
+import { test } from '../dropdown/singleSelectDropdown.spec';
 
-test("Comparing Methods", async ({ page }) => {
+test("Comparing Methods @grp1", async ({ booksPage }) => {
 
-    await page.goto('https://demowebshop.tricentis.com/');
+    await booksPage.navigateTo('https://demowebshop.tricentis.com/');
 
-    const products: Locator = page.locator('.product-title');
-
+    const products: Locator = await booksPage.getProductTitles();
     const count = await products.count();
-
 
     //textContent() method
     for(let i=0; i< count; i++) {
         console.log((await products.nth(i).textContent())?.trim());
         //or
         //const productName : string | null = await products.nth(i).textContent();
-       // console.log(productName? productName.trim() : null);
+        //console.log(productName? productName.trim() : null);
     }
 
     //innerText() method

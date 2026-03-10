@@ -1,55 +1,43 @@
-import {test, expect, Locator} from '@playwright/test';
+import { expect, Locator} from '@playwright/test';
+import { test } from '../dropdown/singleSelectDropdown.spec';
+
+test("Verify Playwright XPath Locators", async ({booksPage}) => {
+  await booksPage.navigateTo('https://demowebshop.tricentis.com/');
 
 
-test("Verify Playwright XPath Locators", async ({page}) => {
-  await page.goto('https://demowebshop.tricentis.com/');
-
-
-  // Absolute XPath
-  const pathLink : Locator = page.locator("xpath = /html/body/div[4]/div/div/div/a/img[1]");
-  await expect(pathLink).toBeVisible();
-
+  // Absolute XPath  
   // Relative XPath
-  const logo: Locator = page.locator("//img[@alt='Tricentis Demo Web Shop']");
-  await expect(logo).toBeVisible();
-
   // XPath with contains()
-  const logoContains: Locator = page.locator("//img[contains(@alt, 'Tricentis Demo Web Shop')]");
-  await expect(logoContains).toBeVisible();
+  booksPage.assertElementVisible();
 
   // count()
-  const products: Locator = page.locator("//h2/a[contains(@href,'computer')]");
-  const productCount = await products.count();
-  expect(productCount).toBeGreaterThan(0);
+  expect(await booksPage.getProductsCount()).toBeGreaterThan(0);
 
   // textContent(), first(), nth(), last()
-  console.log("First product name", await products.first().textContent());
-  console.log("Last product name", await products.last().textContent());
-  console.log("nth product name", await products.nth(1).textContent());
+  console.log("First product name", await booksPage.getProductsLocator().first().textContent());
+  console.log("Last product name", await booksPage.getProductsLocator().last().textContent());
+  console.log("nth product name", await booksPage.getProductsLocator().nth(1).textContent());
 
   // allTextContents()
-  await products.allTextContents().then( allNames => {
+  await booksPage.getProductsLocator().allTextContents().then( allNames => {
     for(const name of allNames) {
       console.log("Product Name: ", name);
     }
   });  
   
   // xpath start with
-  const prodList: Locator = page.locator("//h2/a[starts-with(@href,'/build')]");
-  const prodCount = await prodList.count();
-  expect(prodCount).toBeGreaterThan(0);
+  expect(await booksPage.getProdListCount()).toBeGreaterThan(0);
 
   // text()
-  const regLink: Locator = page.locator("//a[text()='Register']");
-  await expect(regLink).toBeVisible();
+  booksPage.assertRegisterElementVisible();
 
   //last()
-  const lastElement : Locator = page.locator("//div[@class='column follow-us']//li[last()]");
+  const lastElement : Locator = await booksPage.getLastElement();
   await expect(lastElement).toBeVisible();
   console.log("Text content of last element: ", lastElement.textContent());
 
    // position()
-  const fourthElement : Locator = page.locator("//div[@class='column follow-us']//li[position()=3]");
+  const fourthElement : Locator = await booksPage.getFourthElement();
   await expect(fourthElement).toBeVisible();
   console.log("Text content of fourth element: ", fourthElement.textContent());
 })
