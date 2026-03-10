@@ -8,7 +8,7 @@ test('Scrolling to footer', async ({page}) => {
 });
 
 test('Scrolling inside dropdown', async ({page}) => {
-    await page.goto('https://resplendent-pony-e08064.netlify.app/page3');
+    await page.goto('https://precious-scone-c844ed.netlify.app/page3');
     await page.locator(".dropdown").hover();
     const option = page.locator('body div a:nth-child(10)');
     const selectedColor = await option.innerText()

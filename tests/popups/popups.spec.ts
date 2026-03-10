@@ -9,7 +9,7 @@ test('Popup page handling test', async ({browser}) => {
   const parentPage = await context.newPage();
 
   // Navigate to the page that triggers a popup
-  await parentPage.goto('https://resplendent-pony-e08064.netlify.app/page2');
+  await parentPage.goto('https://precious-scone-c844ed.netlify.app/page2');
 
   // Listen for the popup event
   const [popupWindow] = await Promise.all([

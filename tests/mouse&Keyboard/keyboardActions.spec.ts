@@ -3,7 +3,7 @@ import { test } from "@playwright/test";
 
 test("Keyboard Actions Test", async ({ page }) => {
 
-    await page.goto("https://resplendent-pony-e08064.netlify.app/");
+    await page.goto("https://precious-scone-c844ed.netlify.app/");
 
     const nameInputField = page.locator("//input[@id='name']");
     

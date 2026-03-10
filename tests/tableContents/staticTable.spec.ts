@@ -3,7 +3,7 @@ import { test, expect, Locator } from 'playwright/test'
 test('Static Table Tests', async ({ page }) => {
 
 
-    await page.goto('https://resplendent-pony-e08064.netlify.app/page2')
+    await page.goto('https://precious-scone-c844ed.netlify.app/page2')
 
     const tableRows: Locator = page.locator('table[id="rules"] tbody');
     await expect(tableRows).toBeVisible();

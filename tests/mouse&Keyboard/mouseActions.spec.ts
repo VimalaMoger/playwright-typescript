@@ -4,7 +4,7 @@ import {test, expect} from '@playwright/test';
 test('Mouse Actions Test', async ({page}) => {
 
   // Navigate to the test page
-  await page.goto('https://resplendent-pony-e08064.netlify.app/page2');
+  await page.goto('https://precious-scone-c844ed.netlify.app/page2');
 
   const hoverText = page.locator('#hoverBox').hover();
   console.log('Hover action performed on #hoverBox');
@@ -38,7 +38,7 @@ test('Right click Action Test', async ({page}) => {
 test('Double click Actions Test', async ({page}) => {
 
   // Navigate to the test page
-  await page.goto('https://resplendent-pony-e08064.netlify.app/page3');
+  await page.goto('https://precious-scone-c844ed.netlify.app/page3');
 
   await page.locator('#field1').fill('Hello World');
   page.locator('#copyText').dblclick();
@@ -51,7 +51,7 @@ test('Double click Actions Test', async ({page}) => {
 test('Drag and Drop Action Test', async ({page}) => {
 
   // Navigate to the test page
-  await page.goto('https://resplendent-pony-e08064.netlify.app/');
+  await page.goto('https://precious-scone-c844ed.netlify.app/');
   
   const source = page.locator('#drag');
   const tgt = page.locator('#name');
@@ -88,7 +88,7 @@ test('Drag and Drop Action Test', async ({page}) => {
 test('Drag and Drop Actions Test', async ({page}) => {
 
   // Navigate to the test page
-  await page.goto('https://resplendent-pony-e08064.netlify.app/');
+  await page.goto('https://precious-scone-c844ed.netlify.app/');
 
   const source = page.locator('#drag');
   const tgt = page.locator('#name');
@@ -104,10 +104,10 @@ test('Drag and Drop Actions Test', async ({page}) => {
   await page.waitForTimeout(5000);
 });
 
-test.only('Drag to target', async ({page}) => {
+test('Drag to target', async ({page}) => {
 
   // Navigate to the test page
-  await page.goto('https://resplendent-pony-e08064.netlify.app/');
+  await page.goto('https://precious-scone-c844ed.netlify.app/');
 
   const source = page.locator('#drag');
   const tgt = page.locator('#accordion');
