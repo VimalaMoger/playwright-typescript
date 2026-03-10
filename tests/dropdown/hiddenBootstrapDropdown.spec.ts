@@ -2,7 +2,7 @@ import { test as base, Page as page } from '@playwright/test';
 import { LoginPage } from '../../pages/opensource-demo/LoginPage';
 
 
-// Extend basic test by providing a "LoginPage" fixture
+// Extend Base test by providing a "LoginPage" fixture
 const test = base.extend<{ loginPage: LoginPage }>({
     loginPage: async ({ page }, use) => {
         const loginPage = new LoginPage(page);
