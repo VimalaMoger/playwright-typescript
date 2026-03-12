@@ -14,4 +14,4 @@ jobs:
           node-version: "24"
       - run: npm ci
       - name: Run Playwright Tests (Shard ${{ matrix.shard }})
-        run: npx playwright test --shard=${{ matrix.shard }}/3
+        run: npx playwright test /tests --shard=${{ matrix.shard }}/3
