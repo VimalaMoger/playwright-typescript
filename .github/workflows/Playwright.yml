@@ -21,4 +21,16 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test tests/dataDriven/
+        
+      - name: Report
+        uses: actions/upload-artifact@v4        
+        with:
+          path: playwright-report/
+
+      # Hosting automation report on GitHub Pages with GitHub Actions
+      - name: Deploy Allure report to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.5.0
+        with:
+          branch: gh-pages
+          publish_dir: ./allure-report
 
