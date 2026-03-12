@@ -12,6 +12,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "24"
-      - run: npm ci
+          
+      - name: Install dependencies    
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+        
       - name: Run Playwright Tests (Shard ${{ matrix.shard }})
-        run: npx playwright test /tests --shard=${{ matrix.shard }}/3
+        run: npx playwright test /tests/dataDriven --shard=${{ matrix.shard }}/3
