@@ -14,7 +14,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/dataDriven',
   //testMatch:'**/*.spec.ts',
-  //outputDir: 'test-results/',
+  outputDir: 'test-results/',
   /* Run tests in files in parallel */
   timeout: 60000,
   expect: { timeout: 10000 },
