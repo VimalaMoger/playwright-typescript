@@ -12,9 +12,9 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
-  //testMatch:'**/*.spec.ts',
-  //outputDir: 'test-results/',
+  testDir: './tests/dataDriven',
+  testMatch:'**/*.spec.ts',
+  outputDir: 'test-results/',
   /* Run tests in files in parallel */
   timeout: 60000,
   expect: { timeout: 10000 },
