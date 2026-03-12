@@ -12,7 +12,9 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests', //./e2e',
+  testDir: './tests/dataDriven', //'.', //./e2e',
+  //testMatch:'**/*.spec.ts',
+  outputDir: 'test-results/',
   /* Run tests in files in parallel */
   timeout: 60000,
   expect: { timeout: 10000 },
@@ -20,7 +22,7 @@ export default defineConfig({
   //grep:/@sanity/,
   //grep:/(?=./*@grouping)(?=.*@regression)/,
   //grepInvert:/@sanity/,
-  //fullyParallel: true,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -28,15 +30,17 @@ export default defineConfig({
   //retry locally
   //retries: 3,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  //workers: process.env.CI ? 2 : undefined,
+  workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-      ['html', { open: 'always', outputFolder: 'html-report' }],
-      /*['line'],
+    ['allure-playwright', { outputFolder: 'allure-report' }],
+      /*['html', { open: 'always', outputFolder: 'html-report' }],
+      ['line'],
       ['json', {  outputFile: 'test-results.json' }],
       ['junit', {  outputFile: 'test-results.xml' }],
       ['list'], 
-      ['allure-playwright', { outputFolder: 'allure-report' }], */
+       */
       ['./my-custom-reporter.ts'],
       ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
