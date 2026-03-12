@@ -12,9 +12,9 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: '.', //'.', //./e2e',
+  testDir: './e2e',
   //testMatch:'**/*.spec.ts',
-  outputDir: 'test-results/',
+  //outputDir: 'test-results/',
   /* Run tests in files in parallel */
   timeout: 60000,
   expect: { timeout: 10000 },
@@ -26,17 +26,17 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   //retry locally
   //retries: 3,
   /* Opt out of parallel tests on CI. */
-  //workers: process.env.CI ? 2 : undefined,
-  workers: 4,
+  workers: process.env.CI ? 2 : undefined,
+  //workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['allure-playwright', { outputFolder: 'allure-report' }],
-      /*['html', { open: 'always', outputFolder: 'html-report' }],
-      ['line'],
+     //['allure-playwright', { outputFolder: 'allure-report' }],
+      ['html', { open: 'always', outputFolder: 'html-report' }],
+      /* ['line'],
       ['json', {  outputFile: 'test-results.json' }],
       ['junit', {  outputFile: 'test-results.xml' }],
       ['list'], 
@@ -53,7 +53,7 @@ export default defineConfig({
     screenshot:'only-on-failure',
     video: 'retain-on-failure',
     //trace: 'on-first-retry',
-    trace: 'off',
+    trace: 'on',
   },
 
   /* Configure projects for major browsers */
