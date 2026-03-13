@@ -33,5 +33,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./playwright-report
 
