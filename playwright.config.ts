@@ -32,7 +32,7 @@ export default defineConfig({
   //workers: process.env.CI ? 2 : undefined,
   workers: 3,
   reporter: [
-    ['allure-playwright', { resultsDir: 'allure-results' }],
+    ['allure-playwright'],
     ],
    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
