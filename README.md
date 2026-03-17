@@ -20,7 +20,7 @@
 | TypeScript Compiler | v4.20.6       |
 | NPM                 | 11.6.2        |
 | Types/node          | 24.10.1       |
-| Playwright          | 1.17.139      |
+| Playwright          | 1.57.0      |
 | Allure-playwright   | 3.4.5         |
 | Xlsx                | 0.18.5        |
 | Csv-parse           | 6.1.0         |
