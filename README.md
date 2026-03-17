@@ -1,4 +1,6 @@
-# Applications under test
+# Playwright tests, integrating them with GitHub Actions Pipeline, and generating Allure Reports
+
+## Applications under test
 
 - [fooderApp](https://github.com/VimalaMoger/fooderApp)  
     Created custom fixtures and Page Object classes  
@@ -28,13 +30,18 @@
 
 ### Covered
 
-- Locator strategies
+- Language Used: TypeScript
+- Locator strategies, Auto-waiting
+- Headless and headed execution
+- Debugging tools: Screenshots, videos, traces on failures
+- Group Tests, Hooks, Annotations and Tagging
 - Visual Testing
 - Accessibility Testing
-- Screenshots, videos, tracing
-- Group Test, Hooks, Annotations and Tagging
 - Test reports using Line, List, Html, Custom and Allure
 
-#### Data driven test allure report
+#### GitHub Actions 
+- YAML-based configuration, Automatic workflow on push and pull requests, artifacts and report management
+
+#### Data driven test allure report on GiHub pages
 
 https://vimalamoger.github.io/playwright-typescript/
