@@ -1,0 +1,3 @@
+Dialog message: Please select two options
+Dialog message: The total is: 3.30 + food price 85.91 due today
+Dialog message: Your information is submitted. Thank you for your purchase!
