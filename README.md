@@ -35,6 +35,6 @@
 - Group Test, Hooks, Annotations and Tagging
 - Test reports using Line, List, Html, Custom and Allure
 
-#### Reports
+#### Data driven test allure report
 
 https://vimalamoger.github.io/playwright-typescript/
