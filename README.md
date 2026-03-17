@@ -1,4 +1,4 @@
-### Applications under test:
+# Applications under test
 
 - [fooderApp](https://github.com/VimalaMoger/fooderApp)  
 Created custom fixtures and page object classes  
@@ -10,9 +10,21 @@ Set up the test script with combined fixtures using the Page Object Model
 
 - [demoWebShop](https://demowebshop.tricentis.com/)
 
+Dependencies and versions
+
+| Library             | Version       |
+|---------------------|---------------|
+| Node.js             | v24.11.1      |
+| TypeScript Compiler | v4.20.6       |
+| NPM                 | 11.6.2        |
+| Types/node          | 24.10.1       |
+| Playwright          | 1.17.139      |
+| Allure-playwright   | 3.4.5         |
+| Xlsx                | 0.18.5        |
+| Csv-parse           | 6.1.0         |
+| Axe-core            | 4.11.0        |
+
 Covered:
+
 - Visual Testing
 - Accessibility Testing
-
-
-
