@@ -16,12 +16,14 @@ export default defineConfig({
   workers: 3,
   reporter: [
     ['allure-playwright', { outputFolder: 'allure-report' }],
-    /*["html", { outputFolder: 'html-report' }],
+    /*['html', { open: 'always', outputFolder: 'html-report' }],
     ["json", { outputFile: "test-results/report.json" }],
     ['list', { printSteps: true }],
     ['line'],
     ['dot'],
-    ['junit', { outputFile: 'junit-results.xml' }]*/
+    ['junit', { outputFile: 'junit-results.xml' }],
+    ['./my-custom-reporter.ts'],
+    */
     ],
   use: {
     screenshot:'only-on-failure',
